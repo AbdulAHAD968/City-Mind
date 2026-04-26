@@ -34,7 +34,7 @@ class RoutingEngine:
             )
             return path
         except nx.NetworkXNoPath:
-            # Handles environmental uncertainty when target is unreachable
+            
             return None
 
     def find_nearest_depot(self, emergency_location):
@@ -61,19 +61,19 @@ class RiskAnalyzer:
     """
     @staticmethod
     def update_risk(city_graph):
-        # Weight parameters for the risk formula
+        
         W_BASE = 0.5
         W_DENSITY = 0.3
         
         for node_id, node in city_graph.nodes.items():
-            # Base risk assignment based on Location Type
+            
             score = 0.1 
             if node.location_type == "Industrial":
                 score = 0.4
             elif node.location_type == "Power Plant":
                 score = 0.6
             
-            # Incorporating Population Density into the Weighted Heuristic
+            
             density_factor = node.population_density / 100.0
             node.risk_index = (score * W_BASE) + (density_factor * W_DENSITY)
 
@@ -94,7 +94,7 @@ class PriorityManager:
         ALPHA = 0.7
         BETA = 0.3
         
-        # Negative value for Max-Heap simulation using heapq (min-heap)
+        
         priority_score = -(risk_level * ALPHA + (density / 100.0) * BETA)
         heapq.heappush(self.emergencies, (priority_score, location))
 
